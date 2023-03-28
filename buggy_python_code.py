@@ -1,5 +1,5 @@
-import yaml
 import flask
+import yaml
 
 app = flask.Flask(__name__)
 
@@ -23,6 +23,10 @@ def print_nametag(format_string, person):
 
 def fetch_website(urllib_version, url):
     # Import the requested version (2 or 3) of urllib
+    if urlib_version != 2 and urlib_version != 3:
+        print("Invalud urlib_version")
+        exit
+
     exec(f"import urllib{urllib_version} as urllib", globals())
     # Fetch and print the requested URL
 
@@ -40,13 +44,14 @@ def load_yaml(filename):
 
 def authenticate(password):
     # Assert that the password is correct
-    if (password != "Iloveyou"):
+    if password != "Iloveyou":
         print("Invalid password!")
     print("Successfully authenticated!")
 
 if __name__ == '__main__':
     print("Vulnerabilities:")
-    print("1. Format string vulnerability: use string={person.__init__.__globals__[CONFIG][API_KEY]}")
+    print("1. Format string vulnerability: \
+          use string={person.__init__.__globals__[CONFIG][API_KEY]}")
     print("2. Code injection vulnerability: use string=;print('Own code executed') #")
     print("3. Yaml deserialization vulnerability: use string=file.yaml")
     print("4. Use of assert statements vulnerability: run program with -O argument")
@@ -63,4 +68,3 @@ if __name__ == '__main__':
     elif choice == "4":
         password = input("Enter master password: ")
         authenticate(password)
-
